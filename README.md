@@ -3,12 +3,39 @@
 ## Introduction
 `ays_show.py` (forked from [https://github.com/timziebart/ays-model/tree/master](https://github.com/timziebart/ays-model/tree/master)) is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. Users can select options, configure the simulation, and optionally save the output as an image.
 
-## Requirements
-Ensure you have the following Python libraries installed before running the script:
 
-```bash
-pip install numpy scipy matplotlib argcomplete
-```
+## Requirements
+
+### Setup
+The code was tested with Python 3.5 under Ubuntu Xenial. If you want to run it on a different system, please contact [Tim.Kittel@pik-potsdam.de](mailto:Tim.Kittel@pik-potsdam.de).
+
+The code relies on the **PyViability** library, which must be installed to ensure proper functionality. Below are the steps to set up the environment and install all necessary components:
+
+1. **Clone the Repositories**: First, clone both the AYS model and the PyViability repositories from GitHub:
+
+   ```bash
+   git clone https://github.com/timkittel/ays-model.git
+   git clone https://github.com/timkittel/PyViability.git
+   ```
+
+2. **Install Matplotlib**: It’s crucial to install a specific version of Matplotlib to avoid compatibility issues. Use the following command to install Matplotlib version 1.5.3:
+
+   ```bash
+   pip install matplotlib==1.5.3
+   ```
+
+3. **Install PyViability**: Change to the PyViability directory and install it in editable mode. This allows you to modify the code if necessary while still using it in your projects:
+
+   ```bash
+   cd PyViability
+   pip install -e .
+   cd ..
+   ```
+
+### Important Notes
+- Ensure that you have the correct version of Matplotlib. If you install a newer version, you may encounter issues with the opacity of patches, resulting in incorrectly displayed plots. Stick to version 1.5.3 to ensure everything works as expected.
+
+Make sure to follow these steps closely to set up your environment correctly before running the script.
 
 ## Script Breakdown
 
