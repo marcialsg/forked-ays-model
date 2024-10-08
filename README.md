@@ -1,19 +1,17 @@
+# AYS-model Documentation
 
-# AYS Documentation
+## Introduction
+This script (forked from https://github.com/timziebart/ays-model/tree/master ) is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. The user can select options, configure the simulation, and optionally save the output as an image.
 
-## 1. Introduction
-This script is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. The user can select options, configure the simulation, and optionally save the output as an image.
-
-## 2. Requirements
+## Requirements
 Ensure you have the following Python libraries installed before running the script:
-```
+
 pip install numpy scipy matplotlib argcomplete
-```
 
-## 3. Script Breakdown
-### 3.1. Imports
+## Script Breakdown
+
+### 1. Imports
 The script starts by importing several Python modules and custom libraries:
-
 - **ays_model** and **ays_general**: These contain model definitions and utility functions.
 - **numpy**: Provides array operations.
 - **scipy.integrate**: Used for numerical integration (solving differential equations).
@@ -21,23 +19,40 @@ The script starts by importing several Python modules and custom libraries:
 - **matplotlib**: Used to generate 2D and 3D plots.
 - **argparse** and **argcomplete**: Handle command-line arguments and auto-completion.
 
-### 3.2. Global Variables
-The script defines several global variables that are essential for the simulation. These include management options and parameters required for the model's operation.
+## How to Use This Script
 
-### 3.3. Command-Line Interface
-The script uses argparse to handle command-line arguments. The user can specify options for the simulation, including:
-- **option**: Choose the management option (default is `aws.DEFAULT_NAME`).
-- **mode**: Specify which parts to sample (options are `all` or `lake`).
-- **num**: Define the number of initial conditions (default is 400).
-- **draw_boundary**: Option to remove the boundary inside the plot.
-- **save_pic**: Save the generated plot as an image file.
-- **zero**: Compute the zero of the right-hand side in the S=0 plane.
+### 1. Running the Script
+To run the script, save it as `run_model.py` and execute it from the terminal:
 
-### 3.4. Simulation Execution
-The script generates random initial conditions and prepares the simulation for different management scenarios. It performs numerical integration using the defined parameters and generates a 3D plot of the trajectories.
+./run_model.py
 
-### 3.5. Output
-The generated plot can be displayed on the screen or saved as an image file based on the user's preference. The plot visualizes the trajectories of the model under different management options and conditions.
+### 2. Command-Line Arguments
+You can use the following arguments when running the script:
 
-## 4. Conclusion
-This script provides a useful tool for simulating and visualizing model trajectories under various management scenarios. Students can explore different options and parameters to understand the model's behavior better.
+- `option` (positional argument): Choose a management option. Available options are:
+  - The default option (`aws.DEFAULT_NAME`).
+  - Management options defined in `aws.MANAGEMENTS`.
+  - `"dg-bifurcation-end"`: Bifurcation at the end.
+  - `"dg-bifurcation-middle"`: Bifurcation in the middle.
+- `-m`, `--mode`: Specifies which parts should be sampled. The default is `"all"`. You can also choose `"lake"` for a lake-specific mode.
+- `-n`, `--num`: Sets the number of initial conditions for the trajectories (default: 400).
+- `--no-boundary`: If set, this flag removes boundaries in the plot.
+- `-s`, `--save-pic`: Saves the plot to a specified file.
+- `-z`, `--zero`: If set, this flag computes the zero of the system’s right-hand side in the S=0 plane.
+
+**Example:**
+
+./run_model.py dg-bifurcation-end -n 500 -s result.png
+
+This runs the script with 500 initial conditions and saves the resulting plot as `result.png`.
+
+### 3. How the Code Works
+- **Parameters**: Parameters for the model are globalized for easy access, and the `argparse` module is used to handle command-line arguments.
+- **Random Initialization**: The script initializes a specified number of random starting conditions in a 3D space.
+- **Time Integration**: It integrates the system's equations over a specified time frame using numerical methods.
+- **Trajectory Calculation**: The script calculates the trajectories for the specified management options, using the initial conditions.
+- **Visualization**: The trajectories are plotted in a 3D space, and boundaries can be added based on the user's preferences.
+- **Saving Output**: If specified, the resulting plot can be saved as an image file.
+
+## Conclusion
+This script provides a flexible way to explore different management scenarios within a model. By adjusting parameters and using the command-line interface, users can visualize the dynamics of the system effectively.
