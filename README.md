@@ -1,18 +1,20 @@
-# AYS-model Documentation
+# AYS-Model Documentation
 
 ## Introduction
-This script (forked from https://github.com/timziebart/ays-model/tree/master ) is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. The user can select options, configure the simulation, and optionally save the output as an image.
+`ays_show.py` (forked from [https://github.com/timziebart/ays-model/tree/master](https://github.com/timziebart/ays-model/tree/master)) is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. Users can select options, configure the simulation, and optionally save the output as an image.
 
 ## Requirements
 Ensure you have the following Python libraries installed before running the script:
 
+```bash
 pip install numpy scipy matplotlib argcomplete
+```
 
 ## Script Breakdown
 
 ### 1. Imports
 The script starts by importing several Python modules and custom libraries:
-- **ays_model** and **ays_general**: These contain model definitions and utility functions.
+- **ays_model** and **ays_general**: Contain model definitions and utility functions.
 - **numpy**: Provides array operations.
 - **scipy.integrate**: Used for numerical integration (solving differential equations).
 - **scipy.optimize**: Provides optimization tools to find the zeros of functions.
@@ -24,7 +26,9 @@ The script starts by importing several Python modules and custom libraries:
 ### 1. Running the Script
 To run the script, save it as `run_model.py` and execute it from the terminal:
 
-./run_model.py
+```bash
+./ays_show.py
+```
 
 ### 2. Command-Line Arguments
 You can use the following arguments when running the script:
@@ -42,16 +46,18 @@ You can use the following arguments when running the script:
 
 **Example:**
 
-./run_model.py dg-bifurcation-end -n 500 -s result.png
+```bash
+./ays_show.py dg-bifurcation-end -n 500 -s result.png
+```
 
 This runs the script with 500 initial conditions and saves the resulting plot as `result.png`.
 
 ### 3. How the Code Works
 - **Parameters**: Parameters for the model are globalized for easy access, and the `argparse` module is used to handle command-line arguments.
-- **Random Initialization**: The script initializes a specified number of random starting conditions in a 3D space.
+- **Random Initialization**: The script initializes a specified number of random starting conditions in 3D space.
 - **Time Integration**: It integrates the system's equations over a specified time frame using numerical methods.
-- **Trajectory Calculation**: The script calculates the trajectories for the specified management options, using the initial conditions.
-- **Visualization**: The trajectories are plotted in a 3D space, and boundaries can be added based on the user's preferences.
+- **Trajectory Calculation**: The script calculates the trajectories for the specified management options using the initial conditions.
+- **Visualization**: The trajectories are plotted in 3D space, and boundaries can be added based on user preferences.
 - **Saving Output**: If specified, the resulting plot can be saved as an image file.
 
 ## Conclusion
