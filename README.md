@@ -293,81 +293,76 @@ The `ays_reformat.py` script serves as a utility for updating AWS TSM result fil
 ---
 
 ### `ays_tsm` Script Overview
+The `ays_tsm.py` script is designed to perform an in-depth analysis of the AYS model utilizing the Tangent Space Method (TSM) within the PyViability package. This script enables users to simulate various scenarios, adjust model parameters, and compute viability metrics while accounting for different boundary conditions and management strategies. The results of the analysis are saved to a specified output file for further examination.
 
-`ays_tsm.py` is a script designed to analyze the AYS model using the Tangent Space Method (TSM) as part of the PyViability package. It allows users to simulate, modify parameters, and compute viability metrics considering different boundary conditions and management strategies. The output of this analysis can be saved into a specified file for further use.
+#### Background on Tangent Space Mapping (TSM)
 
-Tangent Space Mapping (TSM) is a method for analyzing data represented as Symmetric Positive-Definite (SPD) matrices. These matrices are seen as points on a curved space called a Riemannian manifold. TSM simplifies analysis by projecting these points onto a flat plane called a tangent space, which allows the use of standard machine learning algorithms.
+Tangent Space Mapping (TSM) is a mathematical technique used to analyze data structured as Symmetric Positive-Definite (SPD) matrices, typically viewed as points on a Riemannian manifold, a type of curved space. By projecting these data points onto a tangent space, which is a flat approximation of the manifold at a specific point, TSM facilitates the application of conventional machine learning algorithms.
 
-Here is a simplified algorithm of TSM:
+Basic Steps in TSM:
 
-1. Represent data as SPD matrices: The first step is to represent the data you want to analyze as a set of SPD matrices. This may involve calculating covariance matrices from raw data, as is often done with EEG signals.
-2. Calculate the Riemannian mean: Calculate the Riemannian mean of all the SPD matrices in your dataset. This mean serves as a central reference point on the Riemannian manifold. While there's no closed-form solution, an iterative algorithm is often used for this calculation.
-3. Map to tangent space: Map each SPD matrix onto the tangent space at the Riemannian mean. This involves calculating a logarithmic map between each matrix and the Riemannian mean.
-4. Apply Machine Learning: Now that the data is projected onto a flat tangent space, you can apply standard machine learning algorithms (like SVM or LDA) for classification or other analyses.
+1. **Data Representation**: The data is represented as SPD matrices. For example, EEG signals are often transformed into covariance matrices.
+2. **Riemannian Mean Calculation**: Calculate the Riemannian mean of the SPD matrices, which serves as a central reference on the manifold. This involves an iterative algorithm, as no closed-form solution exists.
+3. **Mapping to Tangent Space**: Each SPD matrix is mapped onto the tangent space at the Riemannian mean using a logarithmic mapping function.
+4. **Machine Learning Application**: Once the data is in the tangent space, standard machine learning algorithms can be applied for tasks such as classification.
 
-#### Script Breakdown
+#### Script Components and Functionality
 
-1. **Imports**
+1. **Imports and Dependencies**:
+   - **ays_general** and **ays_model**: Provide general utility functions and model-specific configurations.
+   - **pyviability**: Offers tools for viability kernel analysis and computational methods.
+   - **numpy** and **scipy.optimize**: Support numerical operations and optimization routines, respectively.
+   - **argparse** and **argcomplete**: Facilitate command-line argument parsing and enable shell auto-completion.
+   - **os**, **sys**, **time**, and **datetime**: Manage system-level operations, time tracking, and filesystem interactions.
 
-   - **ays_general** and **ays_model**: Contain general utility functions and model-specific definitions.
-   - **pyviability**: Provides tools for viability kernel analysis and related computational methods.
-   - **numpy**: Supports numerical operations.
-   - **scipy.optimize**: Offers optimization routines for finding fixed points.
-   - **argparse** and **argcomplete**: Facilitate command-line argument parsing and auto-completion.
-   - **os**, **sys**, **time**, and **datetime**: Handle system, time management, and filesystem interactions.
-
-#### How to Use This Script
-
-1. **Running the Script**:
-   After saving the script as `ays_tsm.py`, you can execute it from the command line:
+2. **Running the Script**:
+   Save the script as `ays_tsm.py`, then execute it on the command line using:
 
    ```bash
    ./ays_tsm.py output-file -b [boundary] [options]
    ```
 
-2. **Command-Line Arguments**:
-
+3. **Command-Line Arguments**:
    - **Positional Argument**:
-     - `output_file`: The file where the output of the TSM analysis is saved.
+     - `output_file`: Specifies the file to save the TSM analysis results.
    
    - **Required Argument**:
-     - `-b`, `--boundaries`: Specifies the boundary conditions to consider. Choose from `planetary-boundary`, `social-foundation`, or `both`.
+     - `-b`, `--boundaries`: Defines the boundary conditions for the simulation, with choices including `planetary-boundary`, `social-foundation`, or `both`.
 
    - **Optional Arguments**:
-     - `--no-backscaling`: Disable backscaling of results.
-     - `-d`, `--dry-run`: Prepare everything without running the TSM computation or saving a file.
-     - `-e`, `--eddies`: Include eddies in the computation.
-     - `-f`, `--force`: Overwrite the output file if it already exists.
-     - `-i`, `--integrate`: Use integration instead of a linear approximation.
-     - `-n`, `--no-save`: Skip saving the results.
-     - `--num`: Set the number of points per dimension for the grid; defaults to `ays.grid_parameters["n0"]`.
-     - `-p`, `--set-parameter`: Change a parameter to a specified value. Caution: execution evaluates the value using `eval`.
-     - `--record-paths`: Record paths for reconstruction.
-     - `--stop-when-finished`: Set a step at which the computation stops after completion.
-     - `-z`, `--zeros`: Estimate fixed points of the system.
+     - `--no-backscaling`: Prevents the backscaling of results.
+     - `-d`, `--dry-run`: Sets up the simulation without executing the TSM computation or generating an output file.
+     - `-e`, `--eddies`: Includes eddy calculations in the analysis.
+     - `-f`, `--force`: Allows overwriting of an existing output file.
+     - `-i`, `--integrate`: Opts for integration over linear approximation when running simulations.
+     - `-n`, `--no-save`: Suppresses saving of the results.
+     - `--num`: Specifies the grid size in terms of points per dimension, defaulting to `ays.grid_parameters["n0"]`.
+     - `-p`, `--set-parameter`: Alters a model parameter to a specified value, using `eval` for value evaluation.
+     - `--record-paths`: Records paths for potential reconstruction of simulations.
+     - `--stop-when-finished`: Designates a computation step at which the process will halt after completion.
+     - `-z`, `--zeros`: Estimates fixed points within the system.
 
    - **Management Arguments**:
-     - Adds arguments based on various management options defined in `ays.MANAGEMENTS`.
+     - Adds arguments dynamically based on management strategies defined in `ays.MANAGEMENTS`.
 
-**Example:**
+**Example Usage**:
 
 ```bash
 ./ays_tsm.py results.out -b both --force --num 100
 ```
 
-This command runs the TSM analysis with both boundaries considered, overwriting an existing `results.out` file, and using a 100-point grid per dimension.
+This command initiates a TSM analysis with both boundary conditions, forces overwriting of `results.out`, and applies a 100-point grid per dimension.
 
-#### How the Code Works
+4. **Code Workflow**:
+   - **Argument Parsing**: Uses `argparse` to handle command-line inputs, setting parameters for simulation.
+   - **Boundary and Parameter Configuration**: Processes and validates user inputs to configure model boundaries and parameters.
+   - **Grid Creation**: Constructs a grid based on boundaries and specified grid parameters.
+   - **Viability Computation**: Executes the TSM-based viability analysis, classifying the model's state topology.
+   - **Output Management**: Saves the analysis results, including configurations and metadata, to the designated output file. If paths are recorded, they are also included.
 
-- **Argument Parsing**: Command-line arguments are parsed to configure the simulation setup.
-- **Boundary and Parameter Handling**: Boundaries and parameters are configured based on user input. Changes are validated and evaluated.
-- **Grid Generation**: A grid is generated based on specified boundaries and the grid parameters.
-- **Viability Analysis**: The script runs viability analysis using TSM, computing topology classifications of the model's state.
-- **Output Management**: Results are saved into the specified output file, including configuration, computation metadata, and optionally, the trajectory paths if recorded.
-
-### Conclusion
-
-`ays_tsm.py` provides a powerful, configurable tool for analyzing the AYS model under different scenarios using TSM. With flexible command-line options, the script accommodates varied user preferences to run detailed simulations, making it a valuable asset for viability analysis and model examination.
+5. **Conclusion**:
+   The `ays_tsm.py` script is a comprehensive tool for examining the AYS model using TSM. It offers extensive configurability through command-line options, allowing users to perform detailed simulations tailored to specific research needs, thereby enriching the understanding of model dynamics and viability.
+   
 
 ---
 
