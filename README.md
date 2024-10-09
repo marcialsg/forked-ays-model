@@ -1,7 +1,7 @@
 
 # AYS-Model Documentation
 
-This documentation provides a detailed overview of the scripts included in the AYS model repository, which is forked from the original repository [here](https://github.com/timziebart/ays-model/tree/master). The AYS model is designed to simulate and analyze ecological or economic systems using Python. Each script in the repository serves a specific function, from exporting data to visualizing results. This document will guide you through the requirements, setup process, and functionality of each script, helping university students in machine learning better understand and utilize the AYS model.
+This documentation provides a detailed overview of the scripts included in the AYS model repository, which is forked from the original repository [here](https://github.com/timziebart/ays-model/tree/master). The AYS model is designed to simulate and analyze ecological or economic systems using Python. Each script in the repository serves a specific function, from exporting data to visualizing results. This document will guide you through the requirements, setup process, and functionality of each script.
 
 ## Requirements
 
