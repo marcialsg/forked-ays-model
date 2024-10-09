@@ -99,10 +99,11 @@ python3 ays_export.py data.tsm
 
 - The script will print the header (metadata) of the input AWS-TSM file.
 - The data (states) will be saved in the text file or printed to the terminal if no output file is provided.
+---
 
 ### `ays_general` Module Overview
-The `ays_general.py` script provides a suite of utility functions and configurations for simulating, visualizing, handling signal interruptions, and managing data related to a specific model. The script essentially supports visualization, data handling, and other general utilities required by the model implemented in other parts of the project.
----
+The `ays_general.py` script provides a suite of utility functions and configurations for simulating, visualizing, handling signal interruptions, and managing data related to a specific model. The script essentially supports visualization, data handling, and other general utilities required by the model implemented in other parts of the 
+
 ## Module Breakdown
 ### 1. Imports
 The module begins with importing a variety of standard libraries and custom modules:
@@ -139,7 +140,7 @@ Additional utility functions include:
 - **recursive_difference** and **get_changed_parameters**: Identify discrepancies between two parameter sets.
 - **print_changed_parameters**: Outputs differences in parameters in a formatted style.
 - **recursive_dict2string**: Converts dictionary objects into a neatly formatted string for displaying.
----
+
 ### Usage
 This module is intended to be used in conjunction with model simulation scripts that require 3D visualization, data serialization, signal handling, and various utilities for managing model parameters and results. It provides high-level abstraction for many repetitive tasks otherwise separately handled in multiple scripts.
 #### Example Usage:
@@ -152,14 +153,10 @@ plt.show()
 This example sets up a 3D figure and adds a boundary representing a planetary boundary given certain parameter values, then displays it.
 By following this structure, `ays_general.py` supports various aspects of model management and visualization needed in broader simulation workflows.
 
-
 ---
-
 ### `ays_model` Module Documentation
 
 The `ays_model.py` module is a component of a larger project that models certain ecological or economic systems. The module handles parameter management, differential equation definitions, and provides mechanisms for working with different management scenarios.
-
----
 
 ## Module Breakdown
 
@@ -223,13 +220,67 @@ This module is meant to be part of a larger simulation framework and should be u
 
 The `ays_model.py` module provides a flexible framework for defining and manipulating the dynamics of a model under various scenarios. It integrates the use of JIT compilation for performance optimization and offers functions for boundary condition checking, making it suitable for simulating complex systems dynamics.
 
+
+---
+
+### `ays_reformat` Script Overview
+
+`ays_reformat.py` is a script designed to reformat AWS TSM result files that are assumed to be in an old format. The script utilizes the functionality of the `ays_general` module to update these files to a more current format. It accepts file names as input via command-line arguments and applies the reformatting process to each specified file.
+
+
+## Script Breakdown
+
+### 1. Imports
+The script imports the following Python modules and custom libraries:
+- **ays_general**: Contains utility functions, including the `reformat` function used for updating file formats.
+- **argparse** and **argcomplete**: Handle command-line arguments and auto-completion.
+
+### 2. Main Code Execution
+
+The script's main functionality is executed within the `if __name__ == "__main__":` block:
+
+1. **Argument Parsing**:
+   - Initializes an `ArgumentParser` to manage the command-line interface.
+   - Uses the argument `files`, which represents one or more files expected to be in an old format that need reformatting.
+   - Argument completion is enabled through `argcomplete`.
+
+2. **File Reformatting**:
+   - For each file specified in the command line arguments, the script calls the `reformat` function from the `ays_general` module.
+   - The `verbose` option in the `reformat` function is set to 1, which typically indicates that the function will provide intermediate output or messages during the process.
+
+### How to Use This Script
+
+1. **Running the Script**:
+   Save the script as `ays_reformat.py` and execute it from the terminal, providing the file(s) to be reformatted as arguments:
+
+   ```bash
+   ./ays_reformat.py file1.txt file2.txt
+   ```
+
+2. **Command-Line Arguments**:
+   - `files` (positional argument): One or more file names expected to be in an old format that need to be reformatted.
+
+**Example:**
+
+```bash
+./ays_reformat.py result1.txt result2.txt
+```
+
+This will apply the reformatting process to `result1.txt` and `result2.txt`, updating them to the current format with messages printed for each reformatting process due to verbosity being enabled.
+
+
+
+### Conclusion
+
+The `ays_reformat.py` script serves as a utility for updating AWS TSM result files from an older format to a current format. By specifying files through command-line arguments, users can streamline the reformatting process, benefiting from any enhancements or changes made in the `reformat` function of the `ays_general` module.
+
 ---
 
 ### `ays_show` Script Overview
 
 `ays_show.py` is designed to simulate and visualize trajectories of a model based on different management scenarios. The model integrates equations using specific parameters and creates 3D plots of these trajectories. Users can select options, configure the simulation, and optionally save the output as an image.
 
----
+
 
 ## Script Breakdown
 
@@ -281,8 +332,6 @@ This runs the script with 500 initial conditions and saves the resulting plot as
 - **Visualization**: The trajectories are plotted in 3D space, with optional boundaries based on user preferences.
 - **Saving Output**: If specified, the plot can be saved as an image file.
 
----
-
-## Conclusion
+### Conclusion
 This script provides a flexible way to explore different management scenarios within a model. By adjusting parameters and using the command-line interface, users can effectively visualize the system dynamics.
 
