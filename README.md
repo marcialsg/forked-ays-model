@@ -177,68 +177,66 @@ This example sets up a 3D figure and adds a boundary representing a planetary bo
 ---
 
 ### `ays_model` Module Documentation
+The `ays_model.py` module is an integral part of a broader project aimed at modeling ecological or economic systems. This module specifically deals with parameter management, differential equation definitions, and provides mechanisms for exploring different management scenarios, allowing users to simulate and analyze the impacts of various policies or strategies.
 
-The `ays_model.py` module is a component of a larger project that models certain ecological or economic systems. The module handles parameter management, differential equation definitions, and provides mechanisms for working with different management scenarios.
-
-#### Module Breakdown
+#### Detailed Module Breakdown
 
 1. **Imports**
 
-   - **from __future__ import**: Ensures compatibility between Python 2 and 3, specifically for division and print function behaviors.
-   - **ays_general**: Holds general constants and utility functions.
-   - **pyviability**: Provides tools for viability theory, checking version compatibility.
-   - **numpy**: A numerical library for array operations.
-   - **warnings**: For issuing warnings to users, particularly concerning compatibility or import issues.
-   - **sys**: Provides access to system-specific parameters and functions.
+   - **from __future__ import**: Ensures compatibility between Python 2 and 3, specifically regarding division and print function behaviors, making sure they act like Python 3 even in Python 2 environments.
+   - **ays_general**: This import fetches the general constants and utility functions which are version-specific, ensuring that the module remains consistent with the rest of the project's components.
+   - **pyviability**: A library providing tools rooted in viability theory, which is crucial for ensuring the system's parameters stay within a viable set over time. The module checks for version compatibility to prevent running with unsupported library versions.
+   - **numpy**: A foundational numerical library that facilitates efficient array operations, essential for handling large datasets and performing mathematical computations needed for simulations.
+   - **warnings**: Used to issue runtime warnings to users, particularly concerning compatibility issues or when imports fail, ensuring that users are aware of potential problems.
+   - **sys**: Offers access to system-specific parameters and functions, particularly useful here for handling compatibility checks and module manipulations.
 
 2. **Compatibility Checks**
 
-   - The script issues warnings if run with Python 2 or with a version of `pyviability` other than 0.2.0.
+   - The script is structured to issue warnings if it is executed with Python 2, as it is primarily tested with Python 3. Additionally, it warns users if the version of `pyviability` is not 0.2.0, which could lead to unexpected behavior due to changes in library functionalities.
 
 3. **Numba Integration**
 
-   - **Numba** is a Just-In-Time (JIT) compiler used to speed up numerical functions.
-   - The script attempts to import Numba, setting flags based on the success of the import, and provides a fallback decorator if Numba is unavailable.
+   - **Numba** is employed as a Just-In-Time (JIT) compiler to optimize numerical functions, enhancing performance by compiling Python functions to machine code at runtime. The script attempts to import Numba, and if unsuccessful, it sets a flag to false and falls back on a dummy decorator, ensuring the script remains functional without Numba, albeit at reduced efficiency.
 
 4. **Management Options**
 
    - **Constants**:
-     - `DEFAULT_NAME`: Default management option set to "default".
-     - `MANAGEMENTS`: A dictionary mapping descriptive names to short codes for different scenario managements.
-  
+     - `DEFAULT_NAME`: Represents the default management option, set to "default", indicating no specific management strategy is applied.
+     - `MANAGEMENTS`: A dictionary that maps descriptive management strategy names to short codes. This allows for easy switching between different scenarios such as "degrowth" or "carbon capture storage".
+
    - **Function `get_management_parameter_dict()`**:
-     - Takes a management scenario and a dictionary of all parameters.
-     - Returns a copy of the parameters modified by scenario-specific values or raises an error if no modifications are found.
+     - This function is pivotal for scenario analysis. It takes a management scenario and a dictionary of all system parameters, returning a modified copy that reflects the specific management strategy. If no changes are detected, it raises an error, ensuring users are alerted to potentially incorrect setups.
 
 5. **Parameter Definitions**
 
+   - These parameters define the system's state and boundaries, crucial for simulation accuracy and relevance.
    - **Global Parameters**:
-     - `AYS_parameters`: A dictionary holding numerical constants for the model, such as time constants, economic and environmental factors.
-     - `boundary_parameters`: Dedicated to defining boundaries, particularly for atmospheric carbon and economic thresholds.
-     - `grid_parameters`: Includes grid-related configurations for simulation, specifying scaling and boundary settings for the model's environment.
+     - `AYS_parameters`: This dictionary encompasses fundamental constants such as economic factors (e.g., GDP-related), environmental constants (e.g., carbon levels), and other factors (e.g., energy transformation efficiencies) that underpin the model's dynamics.
+     - `boundary_parameters`: Defines critical thresholds like atmospheric carbon levels and economic benchmarks, ensuring simulations respect natural and socio-economic boundaries.
+     - `grid_parameters`: Central to simulation setup, these parameters define the grid space over which simulations are run, including scaling factors and boundary adjustments for numerical stability.
 
 6. **Key Functions**
 
    - **`globalize_dictionary()`**:
-     - Makes the dictionary values available as global variables within the specified module.
+     - A utility function that imports dictionary values as global variables within a specified module. This is useful for dynamically adjusting simulations based on parameter changes without hardcoding values.
 
    - **Differential Equation Functions**:
-     - `_AYS_rhs()`: The core differential equation representing the model. Calculates change rates for variables A, W, and S based on input parameters.
-     - `AYS_rhs`: The Numba JIT-compiled version of `_AYS_rhs` (or the base function if Numba is not available).
-     - `AYS_rescaled_rhs()`: Represents the system's right-hand side in a rescaled form, important for numerical stability and handling boundary conditions.
-  
+     - `_AYS_rhs()`: The heart of the module, this function calculates the rates of change for variables A (atmospheric carbon), W (wealth), and S (social capital), based on the model's equations and input parameters. It forms the basis for the simulation's temporal evolution.
+     - `AYS_rhs`: A JIT-compiled version of `_AYS_rhs`, significantly enhancing performance by reducing computation time, crucial for large-scale simulations.
+     - `AYS_rescaled_rhs()`: Provides a rescaled version of the system's equations, improving numerical stability and allowing the model to handle boundary conditions more effectively, particularly important for maintaining accuracy over long simulation runs.
+
    - **Boundary Condition Functions**:
-     - `AYS_sunny_PB()`: Checks if conditions meet planetary boundaries.
-     - `AYS_sunny_SF()`: Checks if conditions surpass the social foundation.
-     - `AYS_sunny_PB_SF()`: Combines checks for both planetary boundaries and social foundation.
+     - `AYS_sunny_PB()`: Evaluates whether the system's state respects planetary boundaries, a critical check for sustainable scenario validation.
+     - `AYS_sunny_SF()`: Assesses whether the system's state exceeds the social foundation threshold, ensuring socio-economic sustainability.
+     - `AYS_sunny_PB_SF()`: Combines checks for both planetary boundaries and social foundation, providing a holistic sustainability assessment.
 
 #### Usage
 
-This module is meant to be part of a larger simulation framework and should be used by importing it into a script or another module that coordinates parameter setting, simulation execution, and visualization. By changing management scenarios and tweaking parameters, users can explore different system behaviors and outcomes.
+This module is designed to be integrated into a larger simulation framework. Users can import it into their scripts or modules where they manage parameter configurations, execute simulations, and interpret results. By altering management scenarios and parameters, users can explore various system behaviors and outcomes, making it a powerful tool for policy analysis and decision-making.
 
 #### Conclusion
 
-The `ays_model.py` module provides a flexible framework for defining and manipulating the dynamics of a model under various scenarios. It integrates the use of JIT compilation for performance optimization and offers functions for boundary condition checking, making it suitable for simulating complex systems dynamics.
+The `ays_model.py` module offers a robust framework for defining and manipulating system dynamics under various scenarios. Its integration of JIT compilation for performance, along with comprehensive boundary condition checks, makes it well-suited for simulating complex system dynamics. This module empowers users to explore and understand the intricate interplay between ecological, economic, and social factors in their models.
 
 ---
 
