@@ -153,7 +153,75 @@ This example sets up a 3D figure and adds a boundary representing a planetary bo
 By following this structure, `ays_general.py` supports various aspects of model management and visualization needed in broader simulation workflows.
 
 
+---
 
+### `ays_model` Module Documentation
+
+The `ays_model.py` module is a component of a larger project that models certain ecological or economic systems. The module handles parameter management, differential equation definitions, and provides mechanisms for working with different management scenarios.
+
+---
+
+## Module Breakdown
+
+### 1. Imports
+
+The module imports several standard and custom libraries:
+
+- **from __future__ import**: Ensures compatibility between Python 2 and 3, specifically for division and print function behaviors.
+- **ays_general**: Holds general constants and utility functions.
+- **pyviability**: Provides tools for viability theory, checking version compatibility.
+- **numpy**: A numerical library for array operations.
+- **warnings**: For issuing warnings to users, particularly concerning compatibility or import issues.
+- **sys**: Provides access to system-specific parameters and functions.
+
+### 2. Compatibility Checks
+
+- The script issues warnings if run with Python 2 or with a version of `pyviability` other than 0.2.0.
+
+### 3. Numba Integration
+
+- **Numba** is a Just-In-Time (JIT) compiler used to speed up numerical functions.
+- The script attempts to import Numba, setting flags based on the success of the import, and provides a fallback decorator if Numba is unavailable.
+
+### 4. Management Options
+
+- **Constants**:
+  - `DEFAULT_NAME`: Default management option set to "default".
+  - `MANAGEMENTS`: A dictionary mapping descriptive names to short codes for different scenario managements.
+  
+- **Function `get_management_parameter_dict()`**:
+  - Takes a management scenario and a dictionary of all parameters.
+  - Returns a copy of the parameters modified by scenario-specific values or raises an error if no modifications are found.
+
+### 5. Parameters Definitions
+
+- **Global Parameters**:
+  - `AYS_parameters`: A dictionary holding numerical constants for the model, such as time constants, economic and environmental factors.
+  - `boundary_parameters`: Dedicated to defining boundaries, particularly for atmospheric carbon and economic thresholds.
+  - `grid_parameters`: Includes grid-related configurations for simulation, specifying scaling and boundary settings for the model's environment.
+
+### 6. Key Functions
+
+- **`globalize_dictionary()`**:
+  - Makes the dictionary values available as global variables within the specified module.
+
+- **Differential Equation Functions**:
+  - `_AYS_rhs()`: The core differential equation representing the model. Calculates change rates for variables A, W, and S based on input parameters.
+  - `AYS_rhs`: The Numba JIT-compiled version of `_AYS_rhs` (or the base function if Numba is not available).
+  - `AYS_rescaled_rhs()`: Represents the system's right-hand side in a rescaled form, important for numerical stability and handling boundary conditions.
+  
+- **Boundary Condition Functions**:
+  - `AYS_sunny_PB()`: Checks if conditions meet planetary boundaries.
+  - `AYS_sunny_SF()`: Checks if conditions surpass the social foundation.
+  - `AYS_sunny_PB_SF()`: Combines checks for both planetary boundaries and social foundation.
+
+### Usage
+
+This module is meant to be part of a larger simulation framework and should be used by importing it into a script or another module that coordinates parameter setting, simulation execution, and visualization. By changing management scenarios and tweaking parameters, users can explore different system behaviors and outcomes.
+
+### Conclusion
+
+The `ays_model.py` module provides a flexible framework for defining and manipulating the dynamics of a model under various scenarios. It integrates the use of JIT compilation for performance optimization and offers functions for boundary condition checking, making it suitable for simulating complex systems dynamics.
 
 ---
 
