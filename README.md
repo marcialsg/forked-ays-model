@@ -316,7 +316,7 @@ Basic Steps in TSM:
    - **os**, **sys**, **time**, and **datetime**: Manage system-level operations, time tracking, and filesystem interactions.
 
 2. **Running the Script**:
-   Save the script as `ays_tsm.py`, then execute it on the command line using:
+   Execute it on the command line using:
 
    ```bash
    ./ays_tsm.py output-file -b [boundary] [options]
@@ -360,7 +360,7 @@ This command initiates a TSM analysis with both boundary conditions, forces over
    - **Viability Computation**: Executes the TSM-based viability analysis, classifying the model's state topology.
    - **Output Management**: Saves the analysis results, including configurations and metadata, to the designated output file. If paths are recorded, they are also included.
 
-5. **Conclusion**:
+### Conclusion
    The `ays_tsm.py` script is a comprehensive tool for examining the AYS model using TSM. It offers extensive configurability through command-line options, allowing users to perform detailed simulations tailored to specific research needs, thereby enriching the understanding of model dynamics and viability.
    
 
