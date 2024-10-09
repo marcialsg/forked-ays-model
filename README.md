@@ -280,6 +280,13 @@ The `ays_reformat.py` script serves as a utility for updating AWS TSM result fil
 
 `ays_tsm.py` is a script designed to analyze the AYS model using the Tangent Space Method (TSM) as part of the PyViability package. It allows users to simulate, modify parameters, and compute viability metrics considering different boundary conditions and management strategies. The output of this analysis can be saved into a specified file for further use.
 
+Tangent Space Mapping (TSM) is a method for analyzing data represented as Symmetric Positive-Definite (SPD) matrices. These matrices are seen as points on a curved space called a Riemannian manifold. TSM simplifies analysis by projecting these points onto a flat plane called a tangent space, which allows the use of standard machine learning algorithms.
+Here is a simplified algorithm of TSM:
+1. Represent data as SPD matrices: The first step is to represent the data you want to analyze as a set of SPD matrices. This may involve calculating covariance matrices from raw data, as is often done with EEG signals.
+2. Calculate the Riemannian mean: Calculate the Riemannian mean of all the SPD matrices in your dataset. This mean serves as a central reference point on the Riemannian manifold. While there's no closed-form solution, an iterative algorithm is often used for this calculation.
+3. Map to tangent space: Map each SPD matrix onto the tangent space at the Riemannian mean. This involves calculating a logarithmic map between each matrix and the Riemannian mean.
+4. Apply Machine Learning: Now that the data is projected onto a flat tangent space, you can apply standard machine learning algorithms (like SVM or LDA) for classification or other analyses.
+
 ## Script Breakdown
 
 ### 1. Imports
@@ -406,6 +413,93 @@ This command processes the specified analysis files and saves the resulting plot
 
 ### Conclusion
 This script provides a tool for analyzing and visualizing bifurcation phenomena within the AWS model. By handling multiple input files and dynamically plotting the data, users can explore how system dynamics change with varying parameters.
+
+---
+
+
+### `ays_tsm_show` Script Overview
+
+`ays_tsm_show.py` is a script for visualizing and analyzing the results of a Time-Space Mapping (TSM) analysis performed on the AWS model. This script provides options to display different regions, set plot boundaries, analyze specific points, and visualize paths within the model space.
+
+
+## Script Breakdown
+
+### 1. Imports
+The script begins by importing necessary Python modules and custom libraries:
+- **pyviability**: For viability analysis functions.
+- **scipy.spatial**: Utilized for spatial computations such as triangulations.
+- **numpy**: Provides support for array operations.
+- **pickle, argparse, argcomplete**: For file handling and command-line argument parsing and auto-completion.
+- **sys, os, datetime**: System operations, path handling, and date/time utilities.
+- **functools**: High-order functions and operations on callable objects.
+- **matplotlib**: Used for generating 2D and 3D plots.
+
+### 2. Region Name Conversion
+The function `RegionName2Option` converts region names into command-line friendly options, either in long or short format. It ensures there are no duplicate short options.
+
+### 3. Command-Line Argument Parsing
+The script makes extensive use of `argparse` to handle command-line arguments:
+
+- **Positional Argument**:
+  - `input_file`: The file containing TSM analysis results.
+
+- **Boundary Options**:
+  - `-b`, `--plot-boundaries-transformed`: Sets boundaries in transformed coordinates.
+  - `--plot-boundaries-original`: Sets boundaries in original coordinates.
+
+- **Defaults Display**:
+  - `-d`, `--defaults`: Shows default values for grid, model, or boundary.
+
+- **Analysis Tools**:
+  - `--analyze-transformed`: Analyzes points closer to a given point in transformed coordinates.
+  - `--analyze-original`: Analyzes points closer to a given point in original coordinates.
+  - `--mark`: Marks analyzed points with a specified color.
+  - `--mark-alpha`: Sets the opacity for marking points.
+  - `--show-path`: Displays the path for analyzed points.
+  - `--paths-outside`: Allows paths to go outside plotting boundaries.
+  - `--no-paths-lake-fallback`: Disables fallback to lake paths if no information is available.
+
+- **Region Plotting**:
+  - `-r`, `--show-region`: Selects regions to display.
+  - `--regions-style`: Chooses plotting style (points or surface).
+  - `--alpha`: Sets opacity for plotted regions.
+
+- **Additional Options**:
+  - `--paper`: Configures the script to create a paper-style plot.
+  - `--reformat`: Automatically reformats the input file if needed.
+  - `-s`, `--save-pic`: Saves the plot to a specified file.
+  - `-t`, `--transformed-formatters`: Formats axes from 0 to 1 instead of 0 to infinity.
+  - `-v`, `--verbose`: Increases verbosity for debugging.
+
+### How to Use This Script
+
+1. **Running the Script**:
+   Save the script as `ays_tsm_show.py` and execute it from the terminal:
+
+   ```bash
+   ./ays_tsm_show.py <input-file>
+   ```
+
+2. **Command-Line Arguments**:
+   The script provides a wide range of command-line arguments to customize the analysis and visualization. Users can specify the input file, analyze specific points, display regions, and set plot boundaries.
+
+**Example:**
+
+```bash
+./ays_tsm_show.py results.pkl --show-region all -b "[[0,1],[0,1],[0,1]]" -s output.png
+```
+
+This command will plot all regions with specified boundaries and save the plot as `output.png`.
+
+### 4. Logic and Operations
+- **Region Parsing**: Converts region options to internal names used by `pyviability`.
+- **Data Handling**: Loads and processes the input file containing TSM data.
+- **Visualization**: Uses `matplotlib` to create 3D plots showing specified regions or paths based on analysis.
+- **Computation**: Includes custom numba-accelerated functions for efficient spatial computations, such as alpha shapes.
+
+### Conclusion
+`ays_tsm_show.py` is a versatile tool for analyzing and visualizing TSM analysis results. By providing a comprehensive command-line interface, it allows users to explore different regions, analyze specific points, and customize visual output effectively.
+
 
 ---
 
