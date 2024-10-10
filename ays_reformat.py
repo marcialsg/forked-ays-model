@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# PYTHON_ARGCOMPLETE_OK
+# ays_reformat.py
 
 from ays_general import __version__, __version_info__
 import ays_general

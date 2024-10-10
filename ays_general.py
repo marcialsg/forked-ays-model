@@ -1,3 +1,4 @@
+# name of the code: ays_general.py
 
 from pyviability import libviability as lv
 
@@ -352,8 +353,6 @@ def add_boundary(ax3d, *, sunny_boundaries, add_outer=False, plot_boundaries=Non
         # ax3d.add_collection3d(undesirable_outer_stdview)
 
 
-
-
 def formatted_value(val):
     fmt = "!r"
     try:
@@ -511,7 +510,6 @@ def load_result_file(fname, *,
         return header, data
     raise IOError("please reformat the file (from version {} to {})".format(versioninfo2version(header.pop("aws-version-info", DEFAULT_VERSION_INFO)), __version__))
 
-
 DEFAULT_HEADER = {
                 "aws-version-info": DEFAULT_VERSION_INFO,
                 "model": "AWS",
@@ -615,10 +613,6 @@ def _reformat(header, data, verbose=0):
         print("done")
 
     return header, data
-
-
-
-
 
 
 ALL_SIGNALS = { x: getattr(signal, x)  for x in dir(signal)

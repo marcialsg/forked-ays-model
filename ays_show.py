@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# PYTHON_ARGCOMPLETE_OK
+# ays_show.py script contents
 
 from ays_general import __version__, __version_info__
 import ays_model as aws
@@ -42,14 +41,19 @@ if __name__ == "__main__":
 
     parser.add_argument("option", choices=RUN_OPTIONS, default=aws.DEFAULT_NAME, nargs="?",
                         help="choose either the default or one of the management options to show")
+    
     parser.add_argument("-m", "--mode", choices=["all", "lake"], default="all",
                         help="which parts should be sampled (default 'all')")
+    
     parser.add_argument("-n", "--num", type=int, default=400,
             help="number of initial conditions (default: 400)")
+    
     parser.add_argument("--no-boundary", dest="draw_boundary", action="store_false",
                         help="remove the boundary inside the plot")
+    
     parser.add_argument("-s", "--save-pic", metavar="file", default="",
                         help="save the picture to 'file'")
+    
     parser.add_argument("-z", "--zero", action="store_true",
             help="compute the zero of the RHS in the S=0 plane")
 

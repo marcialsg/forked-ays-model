@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# PYTHON_ARGCOMPLETE_OK
+#! ays_tsm_bifurc_show.py code
 
 import pyviability as viab
 from pyviability import libviability as lv
